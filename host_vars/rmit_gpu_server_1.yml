@@ -1,0 +1,14 @@
+---
+
+# Not needed just run locally
+#ansible_ssh_user: s3630120
+#ansible_ssh_host: 10.205.51.154
+#ansible_ssh_common_args: >
+#  -o ProxyCommand="ssh -o \'ForwardAgent=yes\' -W %h:%p -q s3630120@titan.csit.rmit.edu.au \'ssh-add /path/to/your/ssh/key\'"
+
+dataset_folder_path: /tmp/downloads/datasets
+workspace_dir: ~/workspace #/opt/home/s3630120
+virtual_env_name: s3630120_venv
+project_user: s3630120
+
+...

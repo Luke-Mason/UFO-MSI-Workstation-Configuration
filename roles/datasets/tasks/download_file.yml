@@ -1,0 +1,88 @@
+---
+
+- name: Check if the files already exists
+  stat:
+    path: "{{ dataset_folder_path }}/{{ item.filename }}"
+  register: downloaded_file_status
+
+- name: debug status
+  debug:
+    var: downloaded_file_status
+
+#- name: Download into dataset folder
+#  get_url:
+#    url: "{{ item.url }}"
+#    dest: "{{ dataset_folder_path }}/{{ item.filename }}"
+#    mode: 0755
+#    timeout: "{{ item.timeout | default(200) }}"
+#  retries: 3
+#  register: item_result
+#  when: downloaded_file_status.stat.exists == false
+
+- name: Download file
+#  command: "{{ script_folder_path }}/gdown {{ item.url }} {{ dataset_folder_path }}/{{ item.filename }}"
+#  command: "python3 {{ script_folder_path }}/download_script.py {{ dataset_folder_path }} {{ item.filename }} {{ item.url }}"
+  command: "python3 {{ script_folder_path }}/download_script.py {{ script_folder_path }}/credentials.json {{ dataset_folder_path }} {{ item.filename }}"
+  args:
+    creates: "{{ dataset_folder_path }}/{{ item.filename }}"
+  become: yes
+  become_method: sudo
+  retries: 3
+  register: item_result
+  when: downloaded_file_status.stat.exists == false
+
+- name: Check if the file is downloaded
+  stat:
+    path: "{{ dataset_folder_path }}/{{ item.filename }}"
+  register: downloaded_file_status
+
+- name: debug result
+  debug:
+      var: item_result
+
+#- name: Check if file has pre-made checksum file
+#  stat:
+#    path: "{{ item.filename }}.sha1sum"
+#  register: checksum_file
+#  when: downloaded_file_status.stat.exists == true
+#
+#- name: Synchronise checksum file to location
+#  synchronize:
+#      src: "{{ item.filename }}.sha1sum"
+#      dest: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
+#  when: checksum_file.stat.exists == false and downloaded_file_status.stat.exists == true
+
+- name: Check if file has checksum file
+  stat:
+    path: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
+  register: checksum_file
+  when: downloaded_file_status.stat.exists == true
+
+- name: Delete check sum file if file does not exist
+  file:
+      path: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
+      state: absent
+  when: downloaded_file_status.stat.exists == false
+
+- name: Create checksum of file and put in checksum value
+  shell: "shasum -a 1 {{ item.filename }} > {{ item.filename }}.sha1sum"
+  args:
+    chdir: "{{ dataset_folder_path }}"
+  when: checksum_file is defined and checksum_file.stat.exists == false
+
+- name: Read checksum file
+  shell: "cat {{ item.filename }}.sha1sum"
+  args:
+    chdir: "{{ dataset_folder_path }}"
+  register: checksum
+  when: downloaded_file_status.stat.exists == true
+
+- name: Check checksums are equal by reading checksum file
+  assert:
+    that: "{{ checksum.stdout.find(item.sha1sum) != -1 }}"
+    fail_msg: "Checksum does not match for file {{ item.filename }}. Expected {{ item.sha1sum }}. Got {{ checksum.stdout }}"
+    success_msg: "Checksum matches for file {{ item.filename }}."
+  register: checksum_assert
+  when: downloaded_file_status.stat.exists == true
+
+...

@@ -1,0 +1,18 @@
+---
+
+- name: Playbook to download and install datasets onto the local machine
+  hosts: gpuhosts
+  vars:
+    default_workspace_dir: "/home/{{ project_user }}"
+    default_project_name: Ultra-Fast-Object-Detection-in-Multispectral-Satellite-Imagery
+    project_working_directory: "{{ workspace_dir | default(default_workspace_dir) }}/{{ project_name | default(default_project_name) }} "
+    ansible_python_interpreter: /usr/bin/python3
+  vars_files:
+    - secrets_vault.yml
+  roles:
+     - bootstrap
+     - poetry
+     - datasets
+  become: true
+
+...

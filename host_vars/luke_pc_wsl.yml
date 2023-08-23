@@ -1,0 +1,8 @@
+---
+
+dataset_folder_path:  /mnt/e/ML_Data
+workspace_dir: ~/workspace # /home/soldier
+virtual_env_name: soldier_venv
+project_user: soldier
+
+...

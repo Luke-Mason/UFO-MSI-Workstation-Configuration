@@ -1,0 +1,21 @@
+
+virtual_env_dir: "{{ workspace_dir }}/.envs"
+virtual_env_path: "{{ virtual_env_dir }}/{{ virtual_env_name }}"
+
+virtual_env_activate: "{{ virtual_env_path }}/bin/activate"
+virtual_pyenv_activate: "{{ virtual_env_path }}/bin/pyvenv"
+
+poetry_version:
+  default: latest
+  type: raw
+  required: false
+  description: >-
+    Poetry version to install. Will be passed together with the `--version`
+    flag to the poetry installer. Check at <https://github.com/python-poetry/poetry>.
+
+poetry_python_path:
+  default: python
+  type: raw
+  required: false
+  description: >-
+    Python executable that should be used for installation of Poetry.

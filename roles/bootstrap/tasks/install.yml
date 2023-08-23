@@ -1,0 +1,32 @@
+---
+
+- name: Install tmux
+  package:
+    name: tmux
+    state: present
+
+- name: Install virtual env
+  pip:
+    name: virtualenv
+    state: present
+
+- name: Create directory for virtual environments
+  file:
+    path: "{{ virtual_env_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Create virtualenv
+  shell:
+    cmd: "virtualenv {{ virtual_env_name }}"
+    creates: "{{ virtual_env_activate }}"
+  args:
+    chdir: "{{ virtual_env_dir }}"
+
+- name: "Copy virtualenv wrapper file"
+  template:
+    src: pyvenv.j2
+    dest: "{{ virtual_pyenv_activate }}"
+    mode: 0755
+
+...

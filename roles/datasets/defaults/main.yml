@@ -1,0 +1,6 @@
+---
+
+default_folder_path: /tmp/downloads/datasets
+dataset_folder_path: "{{ dataset_folder_path | default(default_folder_path) }} "
+script_folder_path: /tmp/scripts
+...

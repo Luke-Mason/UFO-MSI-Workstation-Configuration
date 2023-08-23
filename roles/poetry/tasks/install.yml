@@ -1,0 +1,23 @@
+---
+
+- name: Install Poetry
+  pip:
+    name: poetry
+    virtualenv: "{{ virtual_env_path }}"
+    state: latest  # Install the latest version of poetry
+
+- name: Add Poetry bin directory to PATH
+  lineinfile:
+    path: ~/.bashrc
+    line: 'export PATH="$HOME/.local/bin:$PATH"'
+    regexp: "^\\$HOME/\\.local"
+    state: present
+    insertafter: EOF
+    create: True
+  register: path_updated
+  changed_when: path_updated.changed
+
+- name: Source the .bashrc file
+  command: bash -c "source ~/.bashrc"
+
+...

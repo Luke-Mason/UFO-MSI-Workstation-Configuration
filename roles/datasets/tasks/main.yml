@@ -1,0 +1,10 @@
+---
+
+- name: Download Datasets
+  import_tasks: download.yml
+  tags:
+    - download
+    - download_datasets
+    - role_datasets
+
+...
