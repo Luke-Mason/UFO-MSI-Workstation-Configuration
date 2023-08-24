@@ -1,12 +1,5 @@
 ---
 
-- name: Download poetry
-  import_tasks: download.yml
-  tags:
-    - download
-    - download_poetry
-    - role_poetry
-
 - name: Install poetry packages
   import_tasks: install.yml
   tags:

@@ -5,10 +5,6 @@
     path: "{{ dataset_folder_path }}/{{ item.filename }}"
   register: downloaded_file_status
 
-- name: debug status
-  debug:
-    var: downloaded_file_status
-
 #- name: Download into dataset folder
 #  get_url:
 #    url: "{{ item.url }}"
@@ -20,9 +16,7 @@
 #  when: downloaded_file_status.stat.exists == false
 
 - name: Download file
-#  command: "{{ script_folder_path }}/gdown {{ item.url }} {{ dataset_folder_path }}/{{ item.filename }}"
-#  command: "python3 {{ script_folder_path }}/download_script.py {{ dataset_folder_path }} {{ item.filename }} {{ item.url }}"
-  command: "python3 {{ script_folder_path }}/download_script.py {{ script_folder_path }}/credentials.json {{ dataset_folder_path }} {{ item.filename }}"
+  command: "{{ ansible_python_interpreter }} {{ script_folder }}/download_script.py {{ script_folder }}/credentials.json {{ script_folder }}/token.json {{ dataset_folder_path }}/{{ item.filename }} {{ item.google_file_id }}"
   args:
     creates: "{{ dataset_folder_path }}/{{ item.filename }}"
   become: yes
@@ -64,16 +58,19 @@
       state: absent
   when: downloaded_file_status.stat.exists == false
 
+- name: Calculate Checksum
+  shell: "shasum -a 1 {{ dataset_folder_path }}/{{ item.filename }}"
+  register: checksum
+  when: checksum_file is defined and checksum_file.stat.exists == false
+
 - name: Create checksum of file and put in checksum value
-  shell: "shasum -a 1 {{ item.filename }} > {{ item.filename }}.sha1sum"
-  args:
-    chdir: "{{ dataset_folder_path }}"
+  copy:
+    content: "{{ checksum.stdout }}"
+    dest: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
   when: checksum_file is defined and checksum_file.stat.exists == false
 
 - name: Read checksum file
-  shell: "cat {{ item.filename }}.sha1sum"
-  args:
-    chdir: "{{ dataset_folder_path }}"
+  shell: "cat {{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
   register: checksum
   when: downloaded_file_status.stat.exists == true
 

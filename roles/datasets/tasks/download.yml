@@ -2,14 +2,16 @@
 
 - name: Create script directory
   file:
-    path: "{{ script_folder_path }}"
+    path: "{{ script_folder }}"
     state: directory
     mode: "0755"
 
 - name: Write the credentials from to file
-  shell: "{{ credentials_json }} > {{ script_folder_path }}/credentials.json"
-  args:
-      creates: "{{ script_folder_path }}/credentials.json"
+  copy:
+    content: "{{ credentials_json }}"
+    dest: "{{ script_folder }}/credentials.json"
+  become: yes
+  become_method: sudo
 
 - name: Create dataset folder download directory
   file:
@@ -20,7 +22,7 @@
 - name: Copy download script
   template:
     src: download_script.py
-    dest: "{{ script_folder_path }}/download_script.py"
+    dest: "{{ script_folder }}/download_script.py"
     mode: "0755"
 
 - name: Download files
@@ -37,7 +39,7 @@
 
 
 #- name: Loop over URLs and filenames and start tmux sessions, download into {{ dataset_folder_path }}
-#  command: "tmux new-session -d -s {{ item.filename }} 'python3 {{ script_folder_path }}/download_script.py {{ dataset_folder_path }} {{ item.filename }} {{ item.url }} {{ item.sha1sum }}'"
+#  command: "tmux new-session -d -s {{ item.filename }} 'python3 {{ script_folder }}/download_script.py {{ dataset_folder_path }} {{ item.filename }} {{ item.url }} {{ item.sha1sum }}'"
 #  become: yes
 #  when: file_status.stat.exists == false
 #  loop:

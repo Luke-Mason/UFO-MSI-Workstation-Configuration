@@ -8,7 +8,6 @@
 
 dataset_folder_path: /tmp/downloads/datasets
 workspace_dir: ~/workspace #/opt/home/s3630120
-virtual_env_name: s3630120_venv
 project_user: s3630120
 
 ...

@@ -1,14 +1,15 @@
 ---
 
+script_folder: /tmp/scripts
 
 project_name: UFOD_MSI
-
+virtual_env_name: UFO_MSI_venv
 datasets_to_download:
-  - url: https://gfs302n126.userstorage.mega.co.nz/dl/GhV7wp0vW31-RQfI_EV9yidprzOWHudVEWUTR7Cj4tI0n2446cOVnUU-eMvYvdWsQINRZ_Z8lyrsA2zMbXMFgVlDxnhfYeADmW8WUgCAEIdizyeg2rZwf-P-pxCb5A/0-4394
+  - google_file_id: 18MB247lzkuvKmyjQR30SSmfcnvoZSoy2
     filename: test11.tgz
     sha1sum: 1e74e037c2db6e1567f380338d2946fab19d08d0
     timeout: 6000
-  - url: https://gfs302n125.userstorage.mega.co.nz/dl/hba3tsXMgyPl4AdZl4AWXs4LzlBFhCtJ6l1pkp70AiyT8o5yL4t6FswLZVahm1sY-1Q71OtK8wCbjEav9m0iGcZDssJ6-suw-sG1KtMrQHxyAClpQaMWbA/0-4394
+  - google_file_id: 1SDkpZ-fqCJTRhtBjGdyiBbvI3-Zz5096
     filename: test12.tgz
     sha1sum: 1e74e037c2db6e1567f380338d2946fab19d08d0
     timeout: 6000

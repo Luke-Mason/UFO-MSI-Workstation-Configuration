@@ -1,5 +1,11 @@
 ---
 
+- name: Create workspace
+  file:
+    path: "{{ workspace_dir }}"
+    state: directory
+    mode: 0755
+
 - name: Install tmux
   package:
     name: tmux
@@ -28,5 +34,18 @@
     src: pyvenv.j2
     dest: "{{ virtual_pyenv_activate }}"
     mode: 0755
+
+- name: Upgrade pip
+  pip:
+    name: pip
+    extra_args: --upgrade
+
+- name: Install modules for download script
+  pip:
+    name:
+      - google-auth-oauthlib
+      - google-api-python-client
+      - google-auth-httplib2
+    state: present
 
 ...
