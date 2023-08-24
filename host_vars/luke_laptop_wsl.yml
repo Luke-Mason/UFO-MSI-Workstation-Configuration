@@ -1,8 +1,7 @@
 ---
 
-dataset_folder_path:  /mnt/e/ML_Data
+dataset_folder_path:  /mnt/c/ML_Data
 workspace_dir: ~/workspace # /home/luke
-
 project_user: luke
 
 ...

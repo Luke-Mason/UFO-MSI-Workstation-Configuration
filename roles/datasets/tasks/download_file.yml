@@ -3,6 +3,8 @@
 - name: Check if the files already exists
   stat:
     path: "{{ dataset_folder_path }}/{{ item.filename }}"
+    get_checksum: False
+    get_md5: False
   register: downloaded_file_status
 
 #- name: Download into dataset folder
@@ -28,11 +30,9 @@
 - name: Check if the file is downloaded
   stat:
     path: "{{ dataset_folder_path }}/{{ item.filename }}"
+    get_checksum: False
+    get_md5: False
   register: downloaded_file_status
-
-- name: debug result
-  debug:
-      var: item_result
 
 #- name: Check if file has pre-made checksum file
 #  stat:
@@ -49,25 +49,27 @@
 - name: Check if file has checksum file
   stat:
     path: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
+    get_checksum: False
+    get_md5: False
   register: checksum_file
   when: downloaded_file_status.stat.exists == true
 
 - name: Delete check sum file if file does not exist
   file:
-      path: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
-      state: absent
+    path: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
+    state: absent
   when: downloaded_file_status.stat.exists == false
 
-- name: Calculate Checksum
+- name: Calculate Checksum if checksum file does not exist and file does exist
   shell: "shasum -a 1 {{ dataset_folder_path }}/{{ item.filename }}"
   register: checksum
-  when: checksum_file is defined and checksum_file.stat.exists == false
+  when: downloaded_file_status.stat.exists == true and checksum_file is defined and checksum_file.stat.exists == false
 
 - name: Create checksum of file and put in checksum value
   copy:
     content: "{{ checksum.stdout }}"
     dest: "{{ dataset_folder_path }}/{{ item.filename }}.sha1sum"
-  when: checksum_file is defined and checksum_file.stat.exists == false
+  when: downloaded_file_status.stat.exists == true and checksum_file is defined and checksum_file.stat.exists == false
 
 - name: Read checksum file
   shell: "cat {{ dataset_folder_path }}/{{ item.filename }}.sha1sum"

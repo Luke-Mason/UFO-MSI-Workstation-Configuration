@@ -29,6 +29,15 @@
   include_tasks: download_file.yml
   with_items: "{{ datasets_to_download }}"
 
+- name: Unpackage files
+  unarchive:
+    src: "{{ dataset_folder_path }}/{{ item.filename }}"
+    dest: "{{ dataset_folder_path }}"
+    remote_src: yes
+    creates: "{{ dataset_folder_path }}/{{ item.filename | regex_replace('.tgz', '') }}"
+  with_items: "{{ datasets_to_download }}"
+  when: item.filename | regex_search('.tgz') == true
+
 #- name: Get file statuses
 #  stat:
 #    path: "{{ dataset_folder_path }}/{{ item.filename }}"
@@ -43,32 +52,5 @@
 #  become: yes
 #  when: file_status.stat.exists == false
 #  loop:
-#    - url: https://drive.google.com/file/d/1khBKZzaYnjmXvBTvk2zpBZIdgdgABTuS/view?usp=sharing
-#      filename: test.tgz
-#      sha1sum: 4fcb482f80f2183fdad882efbe6a3171507e2153
-#    - url: https://drive.google.com/file/d/1vicV-9OYuZzmH8ywCks8gIqSPdxuCkcm/view?usp=sharing
-#      filename: test2.tgz
-#      sha1sum: 4fcb482f80f2183fdad882efbe6a3171507e2153
-  #  - url: https://drive.google.com/file/d/1uHM_ojEewRWG0g2OnPX3Jpg4fZLAagZ9/view?usp=sharing
-  #    filename: VUDataScience/Dataset.zip
-  #    sha1sum: 8afe6028999ef2fbb298da708bd5b8120aa005dc
-  #  - url: https://drive.google.com/file/d/13dgVbEJYBBCLvGWOA6ZrRUTe743zqU6U/view?usp=sharing
-  #    filename: xView/train_images.zip
-  #    sha1sum: dce357ce3e7fff6ee28107e9211b793054979166
-  #  - url: https://drive.google.com/file/d/1zWNSneMjczkEkFJ_jqZaZFH8cWGES54g/view?usp=sharing
-  #    filename: xView/train_labels.zip
-  #    sha1sum: 1897556cdc8cb24f7b137988c488768ed7d461b7
-  #  - url: https://drive.google.com/file/d/1BVPHEUVdoIk28GUDQEpdZAwSMCbJBSSB/view?usp=sharing
-  #    filename: xView/val_images.zip
-  #    sha1sum: 42c44878c4003c9411617ca05bf537aab41f420c
-  #  - url: https://drive.google.com/file/d/1JV4VprVtcbjSGQSnrc_evrDDMkSYa7bW/view?usp=sharing
-  #    filename: xView/train_images.tgz
-  #    sha1sum: 1cdd5af68ec3a696f696104efb4730928cde524e
-  #  - url: https://drive.google.com/file/d/1O3aGe_y3_Fodqw6rPgker5OItNzaPXHQ/view?usp=sharing
-  #    filename: xView/train_labels.tgz
-  #    sha1sum: 693abfe34beabcb1bb87242241e0d0e273c36f0c
-  #  - url: https://drive.google.com/file/d/1NT4OYlVEuvJ5ptfMZFcXzUmT8Y6-2Yih/view?usp=sharing
-  #    filename: xView/val_images.tgz
-  #    sha1sum: 1e030f1b2b35cdb8deb408a6d227a6713c32f7ba
 
 ...

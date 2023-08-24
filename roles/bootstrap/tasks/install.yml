@@ -35,11 +35,6 @@
     dest: "{{ virtual_pyenv_activate }}"
     mode: 0755
 
-- name: Upgrade pip
-  pip:
-    name: pip
-    extra_args: --upgrade
-
 - name: Install modules for download script
   pip:
     name:

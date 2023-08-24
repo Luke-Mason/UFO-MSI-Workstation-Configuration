@@ -5,13 +5,31 @@ script_folder: /tmp/scripts
 project_name: UFOD_MSI
 virtual_env_name: UFO_MSI_venv
 datasets_to_download:
-  - google_file_id: 18MB247lzkuvKmyjQR30SSmfcnvoZSoy2
-    filename: test11.tgz
-    sha1sum: 1e74e037c2db6e1567f380338d2946fab19d08d0
-    timeout: 6000
-  - google_file_id: 1SDkpZ-fqCJTRhtBjGdyiBbvI3-Zz5096
-    filename: test12.tgz
-    sha1sum: 1e74e037c2db6e1567f380338d2946fab19d08d0
-    timeout: 6000
+  #  - Sha 1 checksums
+  - google_file_id: 1YcxABPp5-8wNchGhGoMn9E_eFfIs0l0r
+    filename: VUDataScience/Dataset.tgz.sha1sum
+    sha1sum: f6d4d1d61b3ce9d080e6758df57cd85027596664
+  - google_file_id: 14iUjcjh4_j_Lp4SflzPRXLao1gTyGXzA
+    filename: xView/train_images.tgz.sha1sum
+    sha1sum: 3c74c0944cc9618ddb4dabad53c0ca4f6e807d98
+  - google_file_id: 15000I9EkoWXXA6Akfp06rnzjGGlB-A6F
+    filename: xView/train_labels.tgz.sha1sum
+    sha1sum: e8996e3a70bf3f8c04775c1b95000644137c7922
+  - google_file_id: 1Yo-PCOZINTY_Lpc_RXBsOjk01h4zJpue
+    filename: xView/val_images.tgz.sha1sum
+    sha1sum: 304df20284028a43f26593e5f346f30d53a8aa48
 
+#    Files
+  - google_file_id: 1ltA0Y4c55A11v84uZlqdyQzAmQ3eiS8v
+    filename: VUDataScience/Dataset.tgz
+    sha1sum: 06fa58f4e2fc662b4b9b61568bded1d6f9f1ed5f
+  - google_file_id: 1JV4VprVtcbjSGQSnrc_evrDDMkSYa7bW
+    filename: xView/train_images.tgz
+    sha1sum: 647255114b2077ca2a536c5842e265acb6e2d73f
+  - google_file_id: 1O3aGe_y3_Fodqw6rPgker5OItNzaPXHQ
+    filename: xView/train_labels.tgz
+    sha1sum: ac8e1db55fc639a738b582e4404c37f1adf579a5
+  - google_file_id: 1NT4OYlVEuvJ5ptfMZFcXzUmT8Y6-2Yih
+    filename: xView/val_images.tgz
+    sha1sum: 4360e7ba368252b79d9e0e0a7c6acc7b233b9c73
 ...
