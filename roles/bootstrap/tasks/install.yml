@@ -4,7 +4,7 @@
   file:
     path: "{{ workspace_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Install tmux
   package:
@@ -16,24 +16,13 @@
     name: virtualenv
     state: present
 
-- name: Create directory for virtual environments
+- name: Permissions for virtual env activate
   file:
-    path: "{{ virtual_env_dir }}"
-    state: directory
-    mode: 0755
-
-- name: Create virtualenv
-  shell:
-    cmd: "virtualenv {{ virtual_env_name }}"
-    creates: "{{ virtual_env_activate }}"
-  args:
-    chdir: "{{ virtual_env_dir }}"
-
-- name: "Copy virtualenv wrapper file"
-  template:
-    src: pyvenv.j2
-    dest: "{{ virtual_pyenv_activate }}"
-    mode: 0755
+    path: "{{ virtual_env_activate }}"
+    state: file
+    mode: "0755"
+  become: yes
+  become_method: sudo
 
 - name: Install modules for download script
   pip:

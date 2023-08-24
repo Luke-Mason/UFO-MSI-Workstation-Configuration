@@ -3,7 +3,7 @@
 - name: Install Poetry
   pip:
     name: poetry
-    virtualenv: "{{ virtual_env_path }}"
+#    virtualenv: "{{ virtual_env_path }}"
     state: latest  # Install the latest version of poetry
 
 - name: Add Poetry bin directory to PATH
@@ -11,10 +11,10 @@
     dest: ~/.bashrc
     line: 'export PATH="$HOME/.local/bin:$PATH"'
 
-- name: Create alias to activate venv
-  lineinfile:
-    dest: ~/.bashrc
-    line: 'alias activate="source {{ virtual_env_activate }}"'
+#- name: Create alias to activate venv
+#  lineinfile:
+#    dest: ~/.bashrc
+#    line: 'alias activate="source {{ virtual_env_activate }}"'
 
 - name: Source the .bashrc file
   command: bash -c "source ~/.bashrc"
