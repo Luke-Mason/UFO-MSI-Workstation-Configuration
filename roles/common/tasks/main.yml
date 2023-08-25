@@ -1,0 +1,11 @@
+---
+
+- name: install common packages
+  import_tasks: install.yml
+  become: yes
+  tags:
+    - install
+    - install_common
+    - role_common
+
+...

@@ -6,7 +6,7 @@
     state: directory
     mode: "0755"
 
-- name: Write the credentials from to file
+- name: Write the google cloud auth credentials to file from vault
   copy:
     content: "{{ credentials_json }}"
     dest: "{{ script_folder }}/credentials.json"
@@ -18,6 +18,26 @@
     path: "{{ dataset_folder_path }}"
     state: directory
     mode: "0755"
+
+- name: Create ~/.kaggle folder
+  file:
+    path: "~/.kaggle"
+    state: directory
+    mode: "0755"
+
+- name: Write the kaggle auth credentials to file from vault
+  copy:
+    content: "{{ kaggle_json }}"
+    dest: "~/.kaggle/kaggle.json"
+  become: yes
+  become_method: sudo
+
+- name: Download the kaggle data
+  command: "kaggle competitions download -c dstl-satellite-imagery-feature-detection"
+  args:
+      chdir: "{{ dataset_folder_path }}"
+      creates: "{{ dataset_folder_path }}/dstl-satellite-imagery-feature-detection.zip"
+
 
 - name: Copy download script
   template:

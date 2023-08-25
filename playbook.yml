@@ -9,7 +9,7 @@
   vars_files:
     - secrets_vault.yml
   roles:
-     - bootstrap
+     - common
      - poetry
      - datasets
   become: true
