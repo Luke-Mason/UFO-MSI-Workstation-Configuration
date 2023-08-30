@@ -32,4 +32,9 @@
       - google-auth-httplib2
     state: present
 
+- name: Set environment variable for the dataset directory path
+  lineinfile:
+      dest: ~/.bashrc
+      line: 'export DATASET_DIR="{{ dataset_folder_path }}"'
+
 ...
