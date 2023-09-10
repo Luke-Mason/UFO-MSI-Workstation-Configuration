@@ -5,6 +5,7 @@
     name: poetry
 #    virtualenv: "{{ virtual_env_path }}"
     state: latest  # Install the latest version of poetry
+    executable: pip3
 
 - name: Add Poetry bin directory to PATH
   lineinfile:
