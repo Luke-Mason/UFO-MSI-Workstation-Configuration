@@ -6,24 +6,28 @@
     state: directory
     mode: "0755"
 
-- name: Write the google cloud auth credentials to file from vault
-  copy:
-    content: "{{ credentials_json }}"
-    dest: "{{ script_folder }}/credentials.json"
-  become: yes
-  become_method: sudo
+#- name: Write the google cloud auth credentials to file from vault
+#  copy:
+#    content: "{{ credentials_json }}"
+#    dest: "{{ script_folder }}/credentials.json"
+#  become: yes
+#  become_method: sudo
 
-- name: Create dataset folder download directory
+- name: Ensure dataset folder download directory is present
   file:
     path: "{{ dataset_folder_path }}"
     state: directory
     mode: "0755"
+  become: yes
+  become_method: sudo
 
-- name: Create ~/.kaggle folder
+- name: Ensure ~/.kaggle folder is present
   file:
     path: "~/.kaggle"
     state: directory
     mode: "0755"
+  become: yes
+  become_method: sudo
 
 - name: Write the kaggle auth credentials to file from vault
   copy:
@@ -32,22 +36,31 @@
   become: yes
   become_method: sudo
 
+- name: Install Kaggle CLI
+  pip:
+    name: kaggle
+    state: latest
+  become: yes
+  become_method: sudo
+
 - name: Download the kaggle data
   command: "kaggle competitions download -c dstl-satellite-imagery-feature-detection"
   args:
-      chdir: "{{ dataset_folder_path }}"
-      creates: "{{ dataset_folder_path }}/dstl-satellite-imagery-feature-detection.zip"
+    chdir: "{{ dataset_folder_path }}"
+    creates: "{{ dataset_folder_path }}/dstl-satellite-imagery-feature-detection.zip"
+  become: yes
+  become_method: sudo
 
 
-- name: Copy download script
-  template:
-    src: download_script.py
-    dest: "{{ script_folder }}/download_script.py"
-    mode: "0755"
-
-- name: Download files
-  include_tasks: download_file.yml
-  with_items: "{{ datasets_to_download }}"
+#- name: Copy download script
+#  template:
+#    src: download_script.py
+#    dest: "{{ script_folder }}/download_script.py"
+#    mode: "0755"
+#
+#- name: Download files
+#  include_tasks: download_file.yml
+#  with_items: "{{ datasets_to_download }}"
 
 - name: Unpackage files
   unarchive:
